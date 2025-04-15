@@ -7,10 +7,10 @@ const getUserProfile = async(req,res)=>{
     if(!jwt){
         return res.status(401).send({error:"Unauthorized"});
     }
-    const user = await userService.getUserProfileByToken(jwt);
-    return res.status(200).send({user});
+    const userProfile = await userService.getUserProfileByToken(jwt);
+    return res.status(200).send(userProfile);
     }catch(error){
-        return res.status(500).send({error:error.message})
+        return res.status(500).json({error:error.message})
     }
 }
 

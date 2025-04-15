@@ -4,7 +4,7 @@ const jwt = require("../config/jwt.js")
 
 const createUser = async(user)=>{
     try{
-        const {firstName,lastName,email,password} = user;
+        let {firstName,lastName,email,password} = user;
 
         const isUserExist = await User.findOne({email});
 

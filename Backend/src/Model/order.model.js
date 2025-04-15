@@ -59,7 +59,7 @@ const orderSchema = new mongoose.Schema({
 },{timestamps:true})
 
 const Order = mongoose.model("orders",orderSchema);
-module.exports = order
+module.exports = Order
 
 
 
