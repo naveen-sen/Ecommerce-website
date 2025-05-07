@@ -3,7 +3,11 @@ const app = express()
 import cors from 'cors'
 import dotenv from 'dotenv'
 import path from 'path'
+import {connectDb} from "./config/db.js"
+
 dotenv.config()
+
+const PORT = process.env.PORT || 5000
 
 const _dirname = path.resolve()
 
@@ -34,12 +38,6 @@ import productRouter from "./Routes/product.route.js"
 import paymentRouter from "./Routes/payment.route.js"
 
 
-
-
-app.get("/",(req,res)=>{
-    return res.status(200).send({message:"Welcome to e-commerce backend"})
-})
-
 app.use("/auth",authRouter)
 app.use("/api/user",userRouter)
 app.use("/api/product",customerProductRouter)
@@ -62,4 +60,9 @@ if(process.env.NODE_ENV=="production"){
 }
 
 
-export default app
+
+app.listen(PORT,async ()=>{
+    console.log(` Server is running on Port ${PORT}` );
+    connectDb();
+    
+})
