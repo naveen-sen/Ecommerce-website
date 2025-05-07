@@ -1,26 +1,27 @@
-const productService = require("../Services/product.service.js")
+import Product from "../Model/product.model.js"
+import {createProduct,deleteProduct,updateProduct,findProductById,getAllProducts,createMultipleProduct} from "../Services/product.service.js"
 
-const createProduct = async(req,res)=>{
+export const createProducts = async(req,res)=>{
     try{
-        const product = await productService.createProduct(req.body)
+        const product = await createProduct(req.body)
         return res.status(201).send(product)
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const deleteProduct = async(req,res)=>{
+export const deleteProducts = async(req,res)=>{
     try{
-        const product = await productService.deleteProduct(req.params.productId)
+        const product = await deleteProduct(req.params.productId)
         return res.status(200).send(product)
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const updateProduct = async(req,res)=>{
+export const updateProducts = async(req,res)=>{
     try{
-        const product = await productService.updateProduct(req.params.productId,req.body)
+        const product = await updateProduct(req.params.productId,req.body)
         return res.status(200).send(product)
     }catch(error){
         return res.status(500).send({error:error.message})
@@ -28,38 +29,51 @@ const updateProduct = async(req,res)=>{
     }
 }
 
-const findProductById = async(req,res)=>{
+export const findProductsById = async(req,res)=>{
     try{
-        const product = await productService.findProductById(req.params.productId)
+        const product = await findProductById(req.params.productId)
         return res.status(200).send(product)
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const getAllProducts = async(req,res)=>{
+export const getAllProduct = async(req,res)=>{
     try{
-        const products = await productService.getAllProducts(req.query)
+        const products = await getAllProducts(req.query)
         return res.status(200).send(products)
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const createMultipleProduct = async(req,res)=>{
+export const createMultipleProducts = async(req,res)=>{
     try{
-        const products = await productService.createMultipleProduct(req.body)
+        const products = await createMultipleProduct(req.body)
         return res.status(201).send({message:"Products Created Successfully",products})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-module.exports = {
-    createProduct,
-    deleteProduct,
-    updateProduct,
-    findProductById,
-    getAllProducts,
-    createMultipleProduct
+export const getProductBySection = async(req,res)=>{
+    try{const sections = [
+        {
+            id: 1,
+            name: "Men's Kurta",
+            product: await Product.find({ category: 'mens_kurta' }).limit(10)
+          },
+          {
+            id: 2,
+            name: "Men's Shoes",
+            products: await Product.find({ category: 'mens_shoes' }).limit(10)
+          },
+          // Add more sections as needed
+        
+    ]
+
+    res.status(200).send(sections)
+}catch(error){
+    return res.status(500).send({error:error.message})
+}
 }

@@ -1,20 +1,21 @@
-const express = require("express");
-const router = express.Router();
-const authenticate = require("../Middleware/authenticate.js");
+import Router from 'express'
+import {authenticate} from '../Middleware/authenticate.js'
 
-const orderController = require("../Controller/adminOrder.controller.js");
-const Order = require("../Model/order.model.js");
+import {getAllOrder,confirmOrders,shippedOrders,deleteOrders,cancelOrders,deliverOrders} from '../Controller/adminOrder.controller.js'
+// const Order = require("../Model/order.model.js");
 
-router.get("/",authenticate,orderController.getAllOrders)
+const router = Router()
 
-router.put("/:orderId/confirmed",authenticate,orderController.confirmOrder)
+router.get("/",authenticate,getAllOrder)
 
-router.put("/:orderId/shipped",authenticate,orderController.shippedOrder)
+router.put("/:orderId/confirmed",authenticate,confirmOrders)
 
-router.put("/:orderId/delivered",authenticate,orderController.deliverOrder)
+router.put("/:orderId/shipped",authenticate,shippedOrders)
 
-router.put("/:orderId/cancel",authenticate,orderController.cancelOrder)
+router.put("/:orderId/delivered",authenticate,deliverOrders)
 
-router.delete("/:orderId",authenticate,orderController.deleteOrder)
+router.put("/:orderId/cancel",authenticate,cancelOrders)
 
-module.exports = router
+router.delete("/:orderId",authenticate,deleteOrders)
+
+export default router

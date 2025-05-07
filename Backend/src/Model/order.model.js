@@ -1,15 +1,17 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const orderSchema = new mongoose.Schema({
     user:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"users",
+        ref:"user",
         required:true
     },
-    orderItems:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"orderItems"
-    },
+    orderItems:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"orderItems"
+        }
+    ],
     orderDate:{
         type:Date,
         required:true
@@ -52,6 +54,11 @@ const orderSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    discount:{
+        type:Number,
+        required:false,
+        default: 0
+    },
     orderStatus:{
         type:String,
         required:true
@@ -59,7 +66,7 @@ const orderSchema = new mongoose.Schema({
 },{timestamps:true})
 
 const Order = mongoose.model("orders",orderSchema);
-module.exports = Order
+export default Order
 
 
 

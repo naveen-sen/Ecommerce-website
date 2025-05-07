@@ -1,12 +1,13 @@
-const express = require("express");
-const router = express.Router();
+import Router from 'express'
 
-const ratingController = require("../Controller/rating.controller.js");
+import {createRatings,getAllRatings} from '../Controller/rating.controller.js'
 
-const authenticate = require("../Middleware/authenticate.js");
+import {authenticate} from '../Middleware/authenticate.js'
 
-router.post("/create",authenticate,ratingController.createRating)
+const router = Router()
 
-router.get("/product/:productId",authenticate,ratingController.getAllRatings)
+router.post("/create",authenticate,createRatings)
 
-module.exports = router
+router.get("/product/:productId",authenticate,getAllRatings)
+
+export default router

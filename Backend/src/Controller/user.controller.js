@@ -1,28 +1,26 @@
-const userService = require("../Services/user.service.js")
+import {getUserProfileByToken,getAllUser} from "../Services/user.service.js"
 
-const getUserProfile = async(req,res)=>{
+export const getUserProfile = async(req,res)=>{
     try{
         const jwt = req.headers.authorization?.split(" ")[1];
 
     if(!jwt){
         return res.status(401).send({error:"Unauthorized"});
     }
-    const userProfile = await userService.getUserProfileByToken(jwt);
+    const userProfile = await getUserProfileByToken(jwt);
     return res.status(200).send(userProfile);
     }catch(error){
         return res.status(500).json({error:error.message})
     }
 }
 
-const getAllUsers = async(req,res)=>{
+export const getAllUsers = async(req,res)=>{
     try{
-        let users = await userService.getAllUser()
+        let users = await getAllUser()
         return res.status(200).send({users})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
     }
 
-    module.exports = {getUserProfile,
-        getAllUsers
-    }
+    

@@ -1,7 +1,4 @@
 'use client'
-
-import { useState } from 'react'
-import {useNavigate,useLocation} from 'react-router-dom'
 import {
   Dialog,
   DialogBackdrop,
@@ -14,12 +11,15 @@ import {
   MenuItem,
   MenuItems,
 } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import Pagination from '@mui/material/Pagination'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { filter, singleFilter } from '../../Data/FilterData'
+import { findProducts } from '../../store/Product/action'
 import ProductCard from './ProductCard'
-import { mens_kurta } from '../../Data/Mens/Men_kurta'
-import {filter} from '../../Data/FilterData'
-import { singleFilter } from '../../Data/FilterData'
 
 const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
@@ -35,14 +35,33 @@ export default function Product() {
   
   const location = useLocation()
   const navigate = useNavigate()
+  const param = useParams()
+  const dispatch = useDispatch()
+  const { products } = useSelector(store=>store)
+
+
+  const  decodedQueryString = decodeURIComponent(location.search)
+  const queryParams = new URLSearchParams(decodedQueryString)
+  const colorValue = queryParams.get("color");
+  const sizeValue = queryParams.get("size")
+  const priceValue = queryParams.get("price")
+  const discount = queryParams.get("discount")
+  const sortValue = queryParams.get("sort")
+  const pageNumber = Number(queryParams.get("page")) || 1
+  const stock = queryParams.get("stock")
+
+  const handlePageChange = (event,value) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('page', value);
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  }
+
 
   const handleFilter = (value, sectionId) => {
-  console.log('handleFilter called with:', value, sectionId);
   const searchParams = new URLSearchParams(location.search)
-  console.log('searchParams:', searchParams);
 
   let filterValue = searchParams.getAll(sectionId)
-  console.log('filterValue:', filterValue);
 
   if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
     filterValue = filterValue[0].split(",").filter((item) => item !== value);
@@ -59,6 +78,37 @@ export default function Product() {
     navigate({ search: `?${query}` })
   }
 }
+
+  // New handler for single-select filters like price, discount, stock
+  const handleSingleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get(sectionId) === value) {
+      // If the same value is selected again, remove the filter
+      searchParams.delete(sectionId);
+    } else {
+      searchParams.set(sectionId, value);
+    }
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  }
+
+  useEffect(()=>{
+  const [minPrice,maxPrice]=priceValue===null?[0,100000]:priceValue.split("-").map(Number);
+  const data = {
+    category:param.levelThree,
+    color:colorValue || [],
+    size:sizeValue || [],
+    minPrice,
+    maxPrice,
+    minDiscount:discount || 0,
+    sort:sortValue || "price_low",
+    pageNumber : pageNumber ,
+    pageSize:12,
+    stock:stock 
+  }
+  dispatch(findProducts(data))
+
+},[param.levelThree,colorValue,sizeValue,priceValue,discount,sortValue,pageNumber,stock])
 
   return (
     <div className="w-[100vw] bg-white">
@@ -326,44 +376,45 @@ export default function Product() {
                           <div key={option.value} className="flex gap-3">
                             <div className="flex h-5 shrink-0 items-center">
                               <div className="group grid size-4 grid-cols-1">
-                                <input
-                                  defaultValue={option.value}
-                                  defaultChecked={option.checked}
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  type="checkbox"
-                                  className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                />
-                                <svg
-                                  fill="none"
-                                  viewBox="0 0 14 14"
-                                  className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                >
-                                  <path
-                                    d="M3 8L6 11L11 3.5"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-checked:opacity-100"
-                                  />
-                                  <path
-                                    d="M3 7H11"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-indeterminate:opacity-100"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-                            <label htmlFor={`filter-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
-                              {option.label}
-                            </label>
-                          </div>
-                        ))}
+                        <input
+                          defaultValue={option.value}
+                          defaultChecked={option.checked}
+                          id={`filter-${section.id}-${optionIdx}`}
+                          name={`${section.id}[]`}
+                          type="checkbox"
+                          onChange={() => handleSingleFilter(option.value, section.id)}
+                          className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                        />
+                        <svg
+                          fill="none"
+                          viewBox="0 0 14 14"
+                          className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
+                        >
+                          <path
+                            d="M3 8L6 11L11 3.5"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="opacity-0 group-has-checked:opacity-100"
+                          />
+                          <path
+                            d="M3 7H11"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="opacity-0 group-has-indeterminate:opacity-100"
+                          />
+                        </svg>
                       </div>
-                    </DisclosurePanel>
-                  </Disclosure>
+                    </div>
+                    <label htmlFor={`filter-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </DisclosurePanel>
+          </Disclosure>
                 ))}
               </form>
               </>
@@ -371,9 +422,14 @@ export default function Product() {
               {/* Product grid */}
               <div className="lg:col-span-3 w-full">
                 <div className='flex flex-wrap justify-center space-x-0.5 py-8 bg-white'>
-                  {mens_kurta.map((item)=><ProductCard Product={item}/>)}
+                  { products.products && products.products?.content?.map((item)=><ProductCard Product={item}/>)}
                 </div>
               </div>
+            </div>
+          </section>
+          <section className='w-full flex justify-center items-center'>
+            <div className='px-4 py-5 '>
+            <Pagination count={products.products?.totalPages} page={pageNumber} variant="outlined" color="primary"  onChange={handlePageChange}/>
             </div>
           </section>
         </main>

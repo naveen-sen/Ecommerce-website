@@ -1,17 +1,27 @@
 import React from 'react'
+import { Card, CardContent, Typography } from '@mui/material'
 
-function AddressCard() {
+function AddressCard({address}) {
   return (
-    <div className='w-[15rem]'>
-      <div className='space-y-3 flex flex-col items-start'>
-        <p className='font-semibold'>Chloe Doe</p>
-        <p>Indore, Madhya Pradesh, 453641</p>
-        <div className='space-y-1'>
-          <p className='font-semibold'>Phone Number</p>
-          <p>+91 9825478632</p>
-        </div>
-      </div>
-    </div>
+    <Card sx={{ maxWidth: 320, marginBottom: 2, cursor: 'pointer', boxShadow: 3 }}>
+      <CardContent>
+        <Typography variant="h6" component="div" gutterBottom>
+          {address?.firstName + " " + address?.lastName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          {address?.addressLine1}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          {address?.city}, {address?.state}, {address?.pincode}
+        </Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Phone Number
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {address?.phone}
+        </Typography>
+      </CardContent>
+    </Card>
   )
 }
 

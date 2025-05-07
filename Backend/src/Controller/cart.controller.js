@@ -1,27 +1,23 @@
-const cartService = require("../Services/cart.service.js")
+import {findUserCart,addCartItem} from "../Services/cart.service.js"
 
 
-const findUserCart = async(req,res)=>{
+export const findUserCarts = async(req,res)=>{
     const user = req.user
     try{
-        const cart = await cartService.findUserCart(user._id)
+        const cart = await findUserCart(user._id)
         return res.status(200).send(cart)
     }catch(error){
         return res.status(500).send({error:error.message})
     }
     }
 
-const addToCart = async(req,res)=>{
+export const addToCart = async(req,res)=>{
     const user = req.user
     try{
-        const cartItem = await cartService.addCartItem(user._id,req.body)
+        const cartItem = await addCartItem(user._id,req.body)
         return res.status(200).send({cartItem})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
     }
-
-module.exports = {
-    findUserCart,
-    addToCart
-}
+    

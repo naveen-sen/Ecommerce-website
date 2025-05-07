@@ -1,14 +1,15 @@
-const express = require("express");
-const router = express.Router();
+import Router from 'express'
 
-const authenticate = require("../Middleware/authenticate.js");
+import {authenticate} from '../Middleware/authenticate.js'
 
-const orderController = require("../Controller/order.controller.js");
+import {createOrders,orderHistory,findOrdersById} from '../Controller/order.controller.js'
 
-router.post("/",authenticate,orderController.createOrder)
+const router = Router()
 
-router.get("/user",authenticate,orderController.orderHistory)
+router.post("/",authenticate,createOrders)
 
-router.get("/:orderId",authenticate,orderController.findOrderById)
+router.get("/user",authenticate,orderHistory)
 
-module.exports = router
+router.get("/:orderId",authenticate,findOrdersById)
+
+export default router

@@ -1,15 +1,15 @@
-const express = require("express");
-const router = express.Router();
+import Router from 'express'
 
-const productController = require("../Controller/product.controller.js");
+import {createProducts,deleteProducts,updateProducts,createMultipleProducts} from '../Controller/product.controller.js'
 
-const authenticate = require("../Middleware/authenticate.js");
+import {authenticate} from '../Middleware/authenticate.js'
 
+const router = Router()
 
-router.post("/",authenticate,productController.createProduct)
+router.post("/",authenticate,createProducts)
 
-router.post("/multiple",authenticate,productController.createMultipleProduct)
-router.delete("/:productId",authenticate,productController.deleteProduct)
-router.put("/:productId",authenticate,productController.updateProduct)
+router.post("/multiple",authenticate,createMultipleProducts)
+router.delete("/:productId",authenticate,deleteProducts)
+router.put("/:productId",authenticate,updateProducts)
 
-module.exports = router
+export default router

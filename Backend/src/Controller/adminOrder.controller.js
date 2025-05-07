@@ -1,69 +1,60 @@
-const orderService = require("../Services/order.service.js")
+import {getAllOrders,confirmOrder,shippedOrder,deliveredOrder,cancelOrder,deleteOrder} from "../Services/order.service.js"
 
-const getAllOrders = async(req,res)=>{
+export const getAllOrder = async(req,res)=>{
     try{
-        let orders = await orderService.getAllOrders()
+        let orders = await getAllOrders()
         return res.status(200).send({orders})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const confirmOrder = async(req,res)=>{
+export const confirmOrders = async(req,res)=>{
     const orderId = req.params.orderId
     try{
-        const order = orderService.confirmOrder(orderId)
+        const order = confirmOrder(orderId)
         return res.status(200).send({order})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const shippedOrder = async(req,res)=>{
+export const shippedOrders = async(req,res)=>{
     const orderId = req.params.orderId
     try{
-        const order = orderService.shippedOrder(orderId)
+        const order = shippedOrder(orderId)
         return res.status(200).send({order})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const deliverOrder = async(req,res)=>{
+export const deliverOrders = async(req,res)=>{
     const orderId = req.params.orderId
     try{
-        const order = orderService.deliverOrder(orderId)
+        const order = deliveredOrder(orderId)
         return res.status(200).send({order})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const cancelOrder = async(req,res)=>{
+export const cancelOrders = async(req,res)=>{
     const orderId = req.params.orderId
     try{
-        const order = orderService.cancelOrder(orderId)
+        const order = cancelOrder(orderId)
         return res.status(200).send({order})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const deleteOrder = async(req,res)=>{
+export const deleteOrders = async(req,res)=>{
     const orderId = req.params.orderId
     try{
-        const order = orderService.deleteOrder(orderId)
+        const order = deleteOrder(orderId)
         return res.status(200).send({order})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
-}
-
-module.exports = {
-    getAllOrders,
-    confirmOrder,
-    shippedOrder,
-    deliverOrder,
-    cancelOrder,
-    deleteOrder
 }

@@ -1,4 +1,4 @@
-import React, { act, useState } from 'react'
+import React, { act, useState, useRef } from 'react'
 import HomeCard from '../HomeCard/HomeCard';
 import AliceCarousel from 'react-alice-carousel';
 import { Button } from '@headlessui/react';
@@ -7,6 +7,7 @@ import {mens_kurta} from '../../Data/Mens/Men_kurta.js'
 
 function HomesecCarousel({dataName,sectionName}) {
     const [activeIndex,setActiveIndex] = useState(0)
+    const carouselRef = useRef(null);
     const responsive = {
         0: { items: 1 },
         720: { items: 3 },
@@ -16,15 +17,17 @@ function HomesecCarousel({dataName,sectionName}) {
     
 
     const slidePrev = ()=>{
-        console.log('Prev button clicked');
-        setActiveIndex(activeIndex - 1);
-        console.log('Active index:', activeIndex);
+        if(carouselRef.current){
+            carouselRef.current.slidePrev();
+        }
+        setActiveIndex(prev => Math.max(prev - 1, 0));
       };
       
     const slideNext = ()=>{
-        console.log('Next button clicked');
-        setActiveIndex(activeIndex + 1);
-        console.log('Active index:', activeIndex);
+        if(carouselRef.current){
+            carouselRef.current.slideNext();
+        }
+        setActiveIndex(prev => Math.min(prev + 1, dataName ? dataName.length - 1 : 0));
       };
     const onslideChange = ({item})=>setActiveIndex(item)
 
@@ -36,6 +39,7 @@ function HomesecCarousel({dataName,sectionName}) {
     <div className='relative px-4 lg:px-8 flex flex-col items-center justify-center rounded-lg shadow-neutral-50 shadow-md hover:shadow-lg transition-all duration-300 ease-in-out p-4'>
         <div className='w-full h-full'>
         <AliceCarousel
+          ref={carouselRef}
           mouseTracking
           items={items}
           disableDotsControls

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Navigation from '../Components/navigation'
+import Navigation from '../Components/Navigation'
 import Footer from '../Components/Footer/Footer'
 import HomePage from '../pages/HomePage'
 import Cart from '../Components/Cart/Cart'
@@ -11,6 +11,7 @@ import ProductDetail from '../Components/ProductDetail/ProductDetail'
 import Checkout from '../Components/Address_Detail/Checkout'
 import Order from '../Components/Order/Order'
 import OrderDetail from '../Components/Order/OrderDetail'
+import PaymentSuccess from '../Components/Payment/PaymentSuccess'
 
 function CustomerRouter() {
   return (
@@ -19,6 +20,9 @@ function CustomerRouter() {
             <Navigation/>
         </div>
         <Routes>
+          <Route path='/login' element={<HomePage/>}></Route>
+          <Route path='/signup' element={<HomePage/>}></Route>
+          
             <Route path='/' element={<HomePage/>}></Route>
             <Route path='/cart' element={<Cart/>}>
             </Route>
@@ -27,6 +31,7 @@ function CustomerRouter() {
             <Route path='/checkout' element={<Checkout/>}></Route>
             <Route path='/account/orders' element={<Order/>}></Route>
             <Route path='/account/orders/:orderId' element={<OrderDetail/>}></Route>
+            <Route path='/payment-success/:orderId' element={<PaymentSuccess/>}></Route>
 
 
             {/* <HomePage/> */}

@@ -1,8 +1,8 @@
-const Review = require("../Model/review.model.js")
-const productService = require("./product.service.js")
+import Review from "../Model/review.model.js"
+import {findProductById} from "./product.service.js"
 
-async function createReview(reqData,user){
-    const product = await productService.findProductById(reqData.productId)
+export async function createReview(reqData,user){
+    const product = await findProductById(reqData.productId)
 
     const review = await Review.create({
         user:user._id,
@@ -15,13 +15,9 @@ async function createReview(reqData,user){
     return await review.save()
 }
 
-async function getAllReview(productId){
-    const product = await productService.findProductById(reqData.productId)
+export async function getAllReview(productId){
+    const product = await findProductById(reqData.productId)
 
-    return await Review.find({product:product._id}).populate("user").lean()
+    return await Review.find({productId:product._id}).populate("user").lean()
 }
 
-module.exports = {
-    createReview,
-    getAllReview
-}

@@ -1,12 +1,13 @@
-const express = require("express");
-const router = express.Router();
+import Router from 'express'
 
-const productController = require("../Controller/product.controller.js");
+import {getAllProduct,findProductsById} from '../Controller/product.controller.js'
 
-const authenticate = require("../Middleware/authenticate.js");
+import {authenticate} from '../Middleware/authenticate.js'
 
-router.get("/",authenticate,productController.getAllProducts)
+const router = Router()
 
-router.get("/id/:productId",authenticate,productController.findProductById)
+router.get("/",getAllProduct)
 
-module.exports = router
+router.get("/id/:productId",authenticate,findProductsById)
+
+export default router

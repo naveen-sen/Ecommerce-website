@@ -1,24 +1,19 @@
-const cartItemService = require("../Services/cartItem.service.js")
+import {updateCartItem,removeCartItem} from "../Services/cartItem.service.js"
 
-const updateCartItem = async(req,res)=>{
+export const updateCartItems = async(req,res)=>{
     try{
-        const updatedCartItem = await cartItemService.updateCartItem(req.user._id,req.params.cartItemId,req.body)
-        return res.status(200).send({updatedCartItem})
+        const updatedCartItem = await updateCartItem(req.user._id,req.params.id,req.body)
+        return res.status(200).send(updatedCartItem)
     }catch(error){
         return res.status(500).send({error:error.message})
     }
 }
 
-const removeCartItem = async(req,res)=>{
+export const removeCartItems = async(req,res)=>{
     try{
-        const removedCartItem = await cartItemService.removeCartItem(req.user._id,req.params.cartItemId)
+        const removedCartItem = await removeCartItem(req.user._id,req.params.id)
         return res.status(200).send({message:"Item Removed Successfully"})
     }catch(error){
         return res.status(500).send({error:error.message})
     }
     }
-
-module.exports = {
-    updateCartItem,
-    removeCartItem
-}

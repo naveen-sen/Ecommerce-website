@@ -1,4 +1,3 @@
-import Navigation from './Components/navigation'
 import HomePage from './pages/HomePage'
 import './App.css'
 import Footer from './Components/Footer/Footer'
@@ -10,6 +9,7 @@ import Order from './Components/Order/Order'
 import OrderDetail from './Components/Order/OrderDetail'
 import { Route, Routes } from 'react-router-dom'
 import CustomerRouter from './Routes/CustomerRouter'
+import {Toaster} from 'react-hot-toast'
 
 function App() {
   
@@ -21,7 +21,7 @@ function App() {
       <Route path='/*' element= {<CustomerRouter/>}>
       </Route>
     </Routes>
-      <Navigation/>
+      {/* <Navigation/> */}
       {/* <HomePage/> */}
       {/* <Product/> */}
       {/* <ProductDetail/> */}
@@ -30,6 +30,7 @@ function App() {
       {/* <Order/> */}
       {/* <OrderDetail/> */}
       {/* <Footer/> */}
+      <Toaster/>
     </>
   )
 }

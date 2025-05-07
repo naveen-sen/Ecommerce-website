@@ -1,8 +1,8 @@
-const User = require("../Model/user.model.js")
-const bcrypt = require("bcrypt");
-const jwt = require("../config/jwt.js")
+import User from '../Model/user.model.js'
+import bcrypt from 'bcrypt'
+import {getUserIdFromToken} from '../config/jwt.js'
 
-const createUser = async(user)=>{
+export const createUser = async(user)=>{
     try{
         let {firstName,lastName,email,password} = user;
 
@@ -23,7 +23,7 @@ const createUser = async(user)=>{
     }
 }
 
-const findUserById = async(userId)=>{
+export const findUserById = async(userId)=>{
     try{
     const user = await User.findById(userId).populate("address")
 
@@ -37,7 +37,7 @@ const findUserById = async(userId)=>{
     }
 }
 
-const findUserByEmail = async(email)=>{
+export const findUserByEmail = async(email)=>{
     try{
         const user = await User.findOne({email:email})
 
@@ -51,11 +51,11 @@ const findUserByEmail = async(email)=>{
     }
 }
 
-const getUserProfileByToken = async(token)=>{
+export const getUserProfileByToken = async(token)=>{
     try{
-        let user = jwt.getUserIdFromToken(token)
+        let user = getUserIdFromToken(token)
 
-        user = await User.findById(user)
+        user = await User.findById(user).populate("address")
 
         if(!user){
             throw new Error("User not found",user);
@@ -68,7 +68,7 @@ const getUserProfileByToken = async(token)=>{
     }
 }
 
-const getAllUser = async()=>{
+export const getAllUser = async()=>{
     try{
         const users = User.find();
         return users
@@ -76,5 +76,3 @@ const getAllUser = async()=>{
         throw new Error(error.message);
     }
 }
-
-module.exports = {createUser,findUserById,findUserByEmail,getUserProfileByToken,getAllUser}

@@ -11,7 +11,7 @@ const steps=[
 ]
 
 function OrderTracker() {
-    const [activeStep, setActiveStep] = React.useState(3);
+    const [activeStep, setActiveStep] = React.useState(2);
   return (
     <div>
         <Stepper activeStep={activeStep} alternativeLabel>

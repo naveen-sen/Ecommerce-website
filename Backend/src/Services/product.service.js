@@ -1,6 +1,6 @@
-const Category = require("../Model/category.model.js")
-const Product = require("../Model/product.model.js")
-async function createProduct(reqData){
+import Category from '../Model/category.model.js'
+import Product from '../Model/product.model.js'
+export async function createProduct(reqData){
     let topLevel = await Category.findOne({name:reqData.topLevelCategory})
 
     if(!topLevel){
@@ -8,6 +8,8 @@ async function createProduct(reqData){
             name:reqData.topLevelCategory,
             level:1
         })
+
+        await topLevel.save()
     }
 
     let secondLevel = await Category.findOne({name:reqData.secondLevelCategory,parentCategory:topLevel._id})
@@ -18,6 +20,8 @@ async function createProduct(reqData){
             parentCategory:topLevel._id,
             level:2
         })
+
+        await secondLevel.save()
     }
 
     let thirdLevel = await Category.findOne({name:reqData.thirdLevelCategory,parentCategory:secondLevel._id})
@@ -28,26 +32,27 @@ async function createProduct(reqData){
             parentCategory:secondLevel._id,
             level:3
         })
+
+        await thirdLevel.save()
     }
 
     const product = await Product.create({
         title:reqData.title,
         color:reqData.color,
-        discountPercent:reqData.discountPercent,
+        discountPercent:Number(reqData.discountPercent),
         price:reqData.price,
-        discountedPrice:reqData.discountedPrice,
+        discountedPrice:Number(reqData.discountedPrice),
         category:thirdLevel._id,
         description:reqData.description,
-        imageUrl:reqData.image,
+        imageUrl:reqData.imageUrl,
         brand:reqData.brand,
         sizes:reqData.size,
         quantity:reqData.quantity,
-        category:thirdLevel._id
     })
     return await product.save()
 }
 
-async function deleteProduct(productId){
+export async function deleteProduct(productId){
     const product = await findProductById(productId)
     
     await Product.findByIdAndDelete(productId)
@@ -55,12 +60,20 @@ async function deleteProduct(productId){
     return "Product Deleted Successfully"
 }
 
-async function updateProduct(productId,reqData){
+export async function updateProduct(productId,reqData){
     return await Product.findByIdAndUpdate(productId,reqData)
 }
 
-async function findProductById(productId){
-    const product = await Product.findById(productId).populate("category").exec()
+export async function findProductById(productId){
+    const product = await Product.findById(productId).populate({
+        path: "category",
+        populate: {
+            path: "parentCategory",
+            populate: {
+                path: "parentCategory"
+            }
+        }
+    })
 
     if(!product){
         throw new Error("Product not found")
@@ -68,63 +81,85 @@ async function findProductById(productId){
     return product
 }
 
-async function getAllProducts(reqQuery){
+export async function getAllProducts(reqQuery){
     let {category,color,sizes,minPrice,maxPrice,minDiscount,sort,stock,pageNumber,pageSize} = reqQuery
 
     pageSize = pageSize || 10;
     pageNumber = pageNumber || 1;
 
-    let query = Product.find().populate("category")
+    if(pageNumber<1){
+        pageNumber=1;
+    }
 
-    if(category){
+    const skip = (pageNumber-1)*pageSize;
+
+    let filter = {}
+
+    if(category && category !== "undefined" && category !== ""){
         const categoryData = await Category.findOne({name:category})
-
         if(categoryData){
-            query= query.where("category").equals(categoryData._id)
+
+            const categoryIds = [categoryData._id]
+
+            const findDescendants = async (parentId) => {
+                const children = await Category.find({parentCategory: parentId})
+                for(const child of children){
+                    categoryIds.push(child._id)
+                    await findDescendants(child._id)
+                }
+            }
+
+            await findDescendants(categoryData._id)
+
+            filter.category = { $in: categoryIds }
+
+            const count = await Product.countDocuments({category: {$in: categoryIds}});
         }else{
             return {content:[],currentPage:1,totalPages:0}
         }
     }
 
     if(color){
-        const colorSet = new Set(color.split(",").map(color=>color.trim().tolowerCase()))
+        const colorSet = new Set(color.split(",").map(color=>color.trim().toLowerCase()))
 
         const colorRegex = colorSet.size>0?new RegExp([...colorSet].join("|"),"i"):null;
 
-        query = query.where("color").regex(colorRegex)
+        filter.color = colorRegex
     }
 
-    if(sizes){
+    if(sizes && sizes !== "undefined" && sizes !== ""){
         const sizesSet = new Set(sizes);
-        query= query.where("sizes").in([...sizesSet])
+        filter["sizes.name"] = { $in: [...sizesSet] }
     }
 
     if(minPrice && maxPrice){
-        query = query.where("discountedPrice").gte(minPrice).lte(maxPrice)
+        const minPriceNum = Number(minPrice);
+        const maxPriceNum = Number(maxPrice);
+        filter.discountedPrice = { $gte: minPriceNum, $lte: maxPriceNum }
     }
 
     if(minDiscount){
-        query = query.where("discountedPercent").gte(minDiscount)
+        const minDiscountNum = Number(minDiscount);
+        filter.discountPercent = { $gte: minDiscountNum }
     }
 
-    if(stock){
+    if(stock && stock !== "null"){
         if(stock==="in_stock"){
-        query = query.where("quantity").gte(0)
+            filter.quantity = { $gt: 0 }
         }
-
         else if(stock==="out_of_stock"){
-            query = query.where("quantity").lte(1)
+            filter.quantity = { $lte: 0 }
         }
     }
+
+    let query = Product.find(filter).populate("category")
 
     if(sort){
         const sortDirection=sort==="price_high"?-1:1;
         query = query.sort({discountedPrice:sortDirection})
     }
 
-    const totalCount = await Product.countDocuments(query)
-
-    const skip = (pageNumber-1)*pageSize;
+    const totalCount = await Product.countDocuments(filter)
 
     query = query.skip(skip).limit(pageSize)
 
@@ -136,17 +171,9 @@ async function getAllProducts(reqQuery){
 
 }
 
-async function createMultipleProduct(products){
+export async function createMultipleProduct(products){
     for(let product of products){
         await createProduct(product)
     }
 }
 
-module.exports = {
-    createProduct,
-    deleteProduct,
-    updateProduct,
-    findProductById,
-    getAllProducts,
-    createMultipleProduct
-}

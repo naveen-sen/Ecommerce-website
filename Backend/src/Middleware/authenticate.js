@@ -1,15 +1,15 @@
-const jwtProvider = require("../config/jwt.js")
-const userService = require("../Services/user.service.js")
+import { getUserIdFromToken } from "../config/jwt.js"
+import {findUserById,} from "../Services/user.service.js"
 
-const authenticate = async(req,res,next)=>{
+export const authenticate = async(req,res,next)=>{
     try{
         const token = req.headers.authorization?.split(" ")[1]
         if(!token){
             return res.status(401).send({error:"token not found"})
         }
 
-        const userId = jwtProvider.getUserIdFromToken(token);
-        const user = await userService.findUserById(userId)
+        const userId = getUserIdFromToken(token);
+        const user = await findUserById(userId)
         req.user = user;
 
         next()
@@ -18,5 +18,3 @@ const authenticate = async(req,res,next)=>{
     }
     
 }
-
-module.exports = authenticate

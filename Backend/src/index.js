@@ -1,20 +1,37 @@
-const express = require('express');
+import express from 'express'
 const app = express()
+import cors from 'cors'
+import dotenv from 'dotenv'
+import path from 'path'
+dotenv.config()
 
+const _dirname = path.resolve()
+
+const corsOptions = {
+    origin:['http://localhost:5000','http://localhost:5173'],
+    methods:["GET","POST","PUT","DELETE"],
+    credentials:true
+
+}
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-const authRouter = require("./Routes/auth.route.js")
-const userRouter = require("./Routes/user.route.js")
-const customerProductRouter = require("./Routes/customerProduct.route.js")
-const orderRouter = require("./Routes/order.route.js")
-const cartRouter = require("./Routes/cart.route.js")
-const cartItemRouter = require("./Routes/cartItem.route.js")
-const reviewRouter = require("./Routes/review.route.js")
-const ratingRouter = require("./Routes/rating.route.js")
-const adminRouter = require("./Routes/admin.route.js")
-const adminProductRouter = require("./Routes/adminProduct.route.js")
+
+import authRouter from "./Routes/auth.route.js"
+import userRouter from "./Routes/user.route.js"
+import customerProductRouter from "./Routes/customerProduct.route.js"
+import orderRouter from "./Routes/order.route.js"
+import cartRouter from "./Routes/cart.route.js"
+import cartItemRouter from "./Routes/cartItem.route.js"
+import reviewRouter from "./Routes/review.route.js"
+import ratingRouter from './Routes/rating.route.js'
+import adminRouter from "./Routes/admin.route.js"
+import adminProductRouter from "./Routes/adminProduct.route.js"
+import productRouter from "./Routes/product.route.js"
+import paymentRouter from "./Routes/payment.route.js"
 
 
 
@@ -33,6 +50,16 @@ app.use("/api/review",reviewRouter)
 app.use("/api/rating",ratingRouter)
 app.use("/api/admin",adminRouter)
 app.use("/api/admin/product",adminProductRouter)
+app.use("/api/product/",productRouter)
+
+app.use("/api/payment",paymentRouter) 
+
+if(process.env.NODE_ENV=="production"){
+    app.use(express.static(path.join(_dirname,"../Frontend/dist")))
+    app.get("*",(req,res)=>{
+        res.sendFile(path.join(_dirname,"../Frontend","dist","index.html"))
+    })
+}
 
 
-module.exports = app
+export default app

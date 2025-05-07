@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const ratingSchema = new mongoose.Schema({
     user:{
@@ -19,4 +19,4 @@ const ratingSchema = new mongoose.Schema({
 
 const Rating = mongoose.model("ratings",ratingSchema);
 
-module.exports = Rating
+export default Rating

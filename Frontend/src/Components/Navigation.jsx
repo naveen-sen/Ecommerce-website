@@ -19,8 +19,13 @@ import {
   TabPanels,
 } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Fragment, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material'
+import { Fragment, useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { getUser } from '../store/Auth/action'
+import { getCart } from '../store/Cart/action'
+import AuthModal from './Auth/AuthModal'
 
 const navigation = {
   categories: [
@@ -44,40 +49,25 @@ const navigation = {
       sections: [
         {
           id: 'clothing',
-          name: 'Clothing',
+          name: 'clothing',
           items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Dresses', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Denim', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' },
+            { name: 'Lengha Choli ', href: '#' },
+            { name: 'Women Dress', href: '#' },
+            { name: 'top', href: '#' },
+            { name: 'Women Jeans', href: '#' },
+            { name: 'Gouns', href: '#' },
           ],
         },
         {
           id: 'accessories',
           name: 'Accessories',
           items: [
-            { name: 'Watches', href: '#' },
+            { name: 'Watch', href: '#' },
             { name: 'Wallets', href: '#' },
             { name: 'Bags', href: '#' },
             { name: 'Sunglasses', href: '#' },
             { name: 'Hats', href: '#' },
             { name: 'Belts', href: '#' },
-          ],
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Significant Other', href: '#' },
           ],
         },
       ],
@@ -106,13 +96,10 @@ const navigation = {
           id: 'clothing',
           name: 'Clothing',
           items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' },
+            { name: 'Mens Kurta', href: '#' },
+            { name: 'Shirt', href: '#' },
+            { name: 'Men Jeans', href: '#' },
+            { name: "Shoes", href: '#' },
           ],
         },
         {
@@ -120,39 +107,65 @@ const navigation = {
           name: 'Accessories',
           items: [
             { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' },
-          ],
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
           ],
         },
       ],
     },
   ],
-  pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
-  ],
 }
 
 export default function Navigation() {
-  const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [openAuthModal, setOpenAuthModal] = useState(false);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  
+  // Update how we get the auth state
+  const auth = useSelector((state) => state.authReducer);
+  const cartItem = useSelector((state)=>state.cart)
+  const jwt = localStorage.getItem("jwt");
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+      dispatch(getCart());
+    }
+  }, [jwt, dispatch]);
+
+  useEffect(()=>{
+    if(auth.user){
+      handleClose()
+    }
+  },[auth.user])
+  
+  const handleClose = useCallback(() => {
+    setOpenAuthModal(false);
+    if (location.pathname === '/login' || location.pathname === '/signup') {
+      navigate('/');
+    }
+  }, [navigate, location.pathname]);
+
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('jwt');
+    window.location.reload();
+  }, []);
+
+  const handleOpen= () =>{
+    setOpenAuthModal(true)
+    navigate('/login')
+  }
+
+  const handleSignup = ()=>{
+    setOpenAuthModal(true);
+    navigate('/signup')
+  }
 
 
   const handleCategoryClick = (category,section,item,close)=>{
-    navigate(`/${category.id}/${section.id}/${item.name}`);
+    // Trim item.name, then transform to lowercase and replace spaces with underscores
+    const formattedItemName = item.name.trim().toLowerCase().replace(/\s+/g, '_');
+    navigate(`/${category.id}/${section.id}/${formattedItemName}`);
     close()	
   }
 
@@ -242,7 +255,7 @@ export default function Navigation() {
               </TabPanels>
             </TabGroup>
 
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+            {/* <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               {navigation.pages.map((page) => (
                 <div key={page.name} className="flow-root">
                   <a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
@@ -250,13 +263,13 @@ export default function Navigation() {
                   </a>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                <Button onClick={handleOpen}>
                   Sign in
-                </a>
+                </Button>
               </div>
               <div className="flow-root">
                 <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
@@ -271,7 +284,7 @@ export default function Navigation() {
 
       <header className="relative bg-white">
         <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Get free delivery on orders over $100
+          Get free delivery on orders over Rs. 500
         </p>
 
         <nav aria-label="Top" className=" px-4 sm:px-6 lg:px-8">
@@ -293,7 +306,7 @@ export default function Navigation() {
                   <span className="sr-only">Your Company</span>
                   <img
                     alt=""
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                    src="/Images/logo.png"
                     className="h-8 w-auto"
                   />
                 </a>
@@ -371,66 +384,61 @@ export default function Navigation() {
                     </Popover>
                   ))}
 
-                  {navigation.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
-                  ))}
                 </div>
               </PopoverGroup>
 
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <Menu as="div" className="relative">
-                    <MenuButton className="flex items-center">
-                      <div className='profile flex rounded-full size-7 bg-gray-500 cursor-pointer'>
-                        <p className='flex items-center text-white font-bold pl-1.75'>N</p>
-                      </div>
-                    </MenuButton>
-                    
-                    <MenuItems className="absolute left-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black opacity-100 focus:outline-none z-10">
-                      <MenuItem>
-                        {({ active }) => (
-                          <a
-                            href="/account/orders"
-                            className={`${
-                              active ? 'bg-gray-100' : ''
-                            } block w-full px-4 py-2 text-left text-sm font-semibold text-gray-700`}
-                          >
-                            My Orders
-                          </a>
-                        )}
-                      </MenuItem>
-                      <MenuItem>
-                        {({ active }) => (
-                          <button
-                            onClick={() => {
-                              // Add your logout logic here
-                              console.log('Logout clicked')
-                            }}
-                            className={`${
-                              active ? 'bg-gray-100' : ''
-                            } block w-full text-left px-4 py-2 text-sm text-gray-700 font-semibold`}
-                          >
-                            Logout
-                          </button>
-                        )}
-                      </MenuItem>
-                    </MenuItems>
-                  </Menu>
+              <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+  {auth?.user ? (
+    <Menu as="div" className="relative">
+      <MenuButton className="flex items-center">
+        <div className='profile flex rounded-full size-7 bg-indigo-600 cursor-pointer items-center justify-center'>
+          <p className='text-white font-bold text-sm pb-0.5'>
+            {auth.user.firstName?.[0]?.toUpperCase() || 'U'}
+          </p>
+        </div>
+      </MenuButton>
+      
+      <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+        <MenuItem>
+          {({ active }) => (
+            <a
+              href="/account/orders"
+              className={`${
+                active ? 'bg-gray-100' : ''
+              } block px-4 py-2 text-sm text-left text-gray-700`}
+            >
+              My Orders
+            </a>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              onClick={handleLogout}
+              className={`${
+                active ? 'bg-gray-100' : ''
+              } block w-full text-left px-4 py-2 text-sm text-gray-700`}
+            >
+              Logout
+            </button>
+          )}
+        </MenuItem>
+      </MenuItems>
+    </Menu>
+  ) : (
+    <>
+      <Button onClick={handleOpen} className='text-sm text-black'>
+        Sign in
+      </Button>
+      <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
+      <Button onClick={handleSignup}>
+        Sign up
+      </Button>
+    </>
+  )}
+</div>
 
-                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                    Sign in
-                  </a>
-                  <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                    Create account
-                  </a>
-                </div>
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
@@ -447,7 +455,7 @@ export default function Navigation() {
                       aria-hidden="true"
                       className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartItem.cartItems?.length}</span>
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div>
@@ -456,6 +464,8 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+
+      <AuthModal handleClose={handleClose} open={openAuthModal}/>
     </div>
   )
 }

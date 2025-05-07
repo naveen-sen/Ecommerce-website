@@ -1,7 +1,10 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken"
+import { config } from "dotenv"
 
-const JWT_SECRET = "ckuySDfafkuyjbckvaKUdw"
-const generateToken = (id) => {
+config()
+
+const JWT_SECRET = process.env.JWT_SECRET
+export const generateToken = (id) => {
     const token =  jwt.sign({id}, JWT_SECRET, {
         expiresIn:"2d"
     })
@@ -9,7 +12,7 @@ const generateToken = (id) => {
     return token
 }
 
-const getUserIdFromToken = (token) => {
+export const getUserIdFromToken = (token) => {
     try{
         const user = jwt.verify(token,JWT_SECRET)
         return user.id
@@ -18,4 +21,3 @@ const getUserIdFromToken = (token) => {
     }
 }
 
-module.exports = {generateToken, getUserIdFromToken}

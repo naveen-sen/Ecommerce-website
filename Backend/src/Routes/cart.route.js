@@ -1,10 +1,11 @@
-const express = require("express");
-const router = express.Router();
+import Router from 'express'
 
-const authenticate = require("../Middleware/authenticate.js");
-const cartController = require("../Controller/cart.controller.js");
+import {authenticate} from '../Middleware/authenticate.js'
+import {findUserCarts,addToCart} from '../Controller/cart.controller.js'
 
-router.get("/",authenticate,cartController.findUserCart)
-router.put("/add",authenticate,cartController.addToCart)
+const router = Router()
 
-module.exports = router
+router.get("/", authenticate, findUserCarts)
+router.put("/add",authenticate,addToCart)
+
+export default router
