@@ -38,9 +38,9 @@ function AddDelivery() {
     }
 
     return (
-        <div className='w-[100vw]'>
+        <div className='w-screen'>
             <Grid container spacing={4}>
-                <Grid xs={12} lg={5} className='border border-gray-300 rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll ml-8'>
+                <Grid xs={12} lg={5} className='border border-gray-300 rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll ml-8 '>
                     <div className='p-5 py-7 border-b cursor-pointer'>
                         {auth?.user?.address && auth.user.address.length > 0 ? (
                             [...new Map(auth.user.address.map(item => [item.addressLine1, item])).values()]

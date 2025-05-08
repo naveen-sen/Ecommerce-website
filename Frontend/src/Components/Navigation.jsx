@@ -170,7 +170,7 @@ export default function Navigation() {
   }
 
   return (
-    <div className="bg-white w-[100vw]">
+    <div className="bg-white w-screen">
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop

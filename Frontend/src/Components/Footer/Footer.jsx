@@ -4,9 +4,9 @@ import React from 'react'
 
 function Footer() {
   return (
-    <div className='w-full' style={{width:"100vw",margin: 0, padding: 0, left: 0}}>
+    <div className='w-screen' style={{margin: 0, padding: 0, left: 0}}>
         <Grid className="bg-black text-white text-center mt-10 w-full " container 
-        sx={{bgcolor:"black",color:"white",py:3, width:"100vw",maxWidth:"100vw"}}
+        sx={{bgcolor:"black",color:"white",py:3, width:"100%",maxWidth:"100%"}}
         >
             <Grid item xs={12} sm={6} md={3}>
                 <Typography className='pb-4 px-30' variant='h6'>Company</Typography>

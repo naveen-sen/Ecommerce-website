@@ -78,7 +78,7 @@ export default function ProductDetail() {
 
   return (
     <div className="bg-white lg:px-20">
-      <div className="pt-6">
+      <div className="pt-6 ">
       <nav aria-label="Breadcrumb">
       <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
     {generateBreadcrumbs(products.product).map((breadcrumb) => (
@@ -114,7 +114,7 @@ export default function ProductDetail() {
         <section className='grid grid-cols-1 lg:grid-cols-2 px-4 gap-x-8 gap-y-14 pt-10 w-[100vw]'>
           {/* Image gallery */}
         <div className="flex flex-col items-center">
-          <div className="overflow-hidden rounded-lg max-w-[30rem] max-h-[35rem]">
+          <div className="overflow-hidden  rounded-lg max-w-[30rem] max-h-[35rem]">
           <img
             alt=""
             src={products.product?.imageUrl}
@@ -127,8 +127,8 @@ export default function ProductDetail() {
           {/* Product info */}
           <div className="lg:col-span-1 max-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">	
             <div className="lg:col-span-2 ">
-              <h1 className="text-lg lg:text-xl font-semibold tracking-tight text-gray-900 ">{products.product?.brand}</h1>
-              <h1 className="text-lg lg:text-xl font-semibold tracking-tight text-gray-900 opacity-60">{products.product?.title}</h1>
+              <h1 className="text-lg lg:text-xl font-semibold tracking-tight text-gray-900 pr-5 ">{products.product?.brand}</h1>
+              <h1 className="text-lg lg:text-xl font-semibold tracking-tight text-gray-900 opacity-60 pr-20">{products.product?.title}</h1>
             </div>
 
             {/* Options */}
@@ -164,7 +164,7 @@ export default function ProductDetail() {
                     <RadioGroup
                       value={selectedSize}
                       onChange={setSelectedSize}
-                      className="grid grid-cols-4 gap-4 pr-10 sm:grid-cols-8 lg:grid-cols-4"
+                      className="grid grid-cols-4 gap-4 pr-15 sm:grid-cols-8 lg:grid-cols-4"
                     >
                       {product.sizes.map((size) => (
                         <Radio
@@ -378,7 +378,7 @@ export default function ProductDetail() {
         
 
         {/* Similar Product */}
-        <section className="w-[100vw] pt-10">
+        <section className="w-screen pt-10">
           <div className="flex justify-start">
               <h1 className="py-5 font-bold">Similar Product</h1>
           </div>

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_BASE_PATH = "/"
 
-export const BASE_URL = import.meta.env.MODE==="development" ? "http://localhost:5000" : `${API_BASE_PATH}`
+export const BASE_URL = import.meta.env.MODE==="development" ? "http://localhost:3000" : `${API_BASE_PATH}`
 
 const token = localStorage.getItem("jwt")
 

@@ -34,7 +34,7 @@ function HomesecCarousel({dataName,sectionName}) {
     const items=dataName ? dataName.slice(0,10).map((item)=><HomeCard product={item}/>):[];
     
   return (
-    <div className='w-[100vw] '>
+    <div className='w-full overflow-x-hidden '>
         <h2 className='text-2xl font-bold text-gray-800 text-left px-10'>{sectionName}</h2>
     <div className='relative px-4 lg:px-8 flex flex-col items-center justify-center rounded-lg shadow-neutral-50 shadow-md hover:shadow-lg transition-all duration-300 ease-in-out p-4'>
         <div className='w-full h-full'>

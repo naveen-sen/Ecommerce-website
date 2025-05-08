@@ -62,8 +62,8 @@ export default function Checkout() {
 
 
   return (
-    <Box sx={{ width: '80vw' }}>
-      <Stepper activeStep={activeStep}>
+    <Box className='py-10  ' sx={{ width: '80vw' }}>
+      <Stepper className='ml-80' activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
@@ -100,7 +100,7 @@ export default function Checkout() {
               color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{ mr: 1,ml:5 }}
+              sx={{ mr: 1, ml: 45 }}
             >
               Back
             </Button>
