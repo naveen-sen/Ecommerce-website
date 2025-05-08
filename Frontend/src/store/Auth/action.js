@@ -6,7 +6,7 @@ const registerRequest = ()=>({type:REGISTER_REQUEST});
 const registerSuccess = (user)=>({type:REGISTER_SUCCESS,payload:user});
 const registerFailure = (error)=>({type:REGISTER_FAILURE,payload:error});
 
-const BaseUrl = import.meta.env.MODE==="development" ?"http://localhost:3000" : "/"
+const BaseUrl = import.meta.env.MODE==="development" ?"http://localhost:3000" : "https://thetrendycart.onrender.com"
 
 export const register = (userData)=>async (dispatch)=>{
     dispatch(registerRequest())
