@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const BASE_URL = import.meta.env.MODE==="development" ? "http://localhost:3000" : "https://thetrendycart.onrender.com"
+export const BASE_URL = import.meta.env.MODE==="development" ? "http://localhost:3000" : "/"
 
 const token = localStorage.getItem("jwt")
 
