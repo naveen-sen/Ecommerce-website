@@ -24,18 +24,18 @@ app.use(express.urlencoded({extended:true}))
 
 
 
-import authRouter from "./src/Routes/auth.route.js"
-import userRouter from "./src/Routes/user.route.js"
-import customerProductRouter from "./src/Routes/customerProduct.route.js"
-import orderRouter from "./src/Routes/order.route.js"
-import cartRouter from "./src/Routes/cart.route.js"
-import cartItemRouter from "./src/Routes/cartItem.route.js"
-import reviewRouter from "./src/Routes/review.route.js"
-import ratingRouter from './src/Routes/rating.route.js'
-import adminRouter from "./src/Routes/admin.route.js"
-import adminProductRouter from "./src/Routes/adminProduct.route.js"
-import productRouter from "./src/Routes/product.route.js"
-import paymentRouter from "./src/Routes/payment.route.js"
+import authRouter from "./Routes/auth.route.js"
+import userRouter from "./Routes/user.route.js"
+import customerProductRouter from "./Routes/customerProduct.route.js"
+import orderRouter from "./Routes/order.route.js"
+import cartRouter from "./Routes/cart.route.js"
+import cartItemRouter from "./Routes/cartItem.route.js"
+import reviewRouter from "./Routes/review.route.js"
+import ratingRouter from './Routes/rating.route.js'
+import adminRouter from "./Routes/admin.route.js"
+import adminProductRouter from "./Routes/adminProduct.route.js"
+import productRouter from "./Routes/product.route.js"
+import paymentRouter from "./Routes/payment.route.js"
 
 
 app.use("/auth",authRouter)
