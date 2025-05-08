@@ -38,7 +38,7 @@ import productRouter from "./Routes/product.route.js"
 import paymentRouter from "./Routes/payment.route.js"
 
 
-app.use("/auth",authRouter)
+app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter)
 app.use("/api/product",customerProductRouter)
 app.use("/api/order",orderRouter)
