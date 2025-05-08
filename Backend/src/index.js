@@ -7,7 +7,7 @@ import {connectDb} from "./config/db.js"
 
 dotenv.config()
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000
 
 const _dirname = path.resolve()
 
@@ -38,7 +38,7 @@ import productRouter from "./Routes/product.route.js"
 import paymentRouter from "./Routes/payment.route.js"
 
 
-app.use("/api/auth",authRouter)
+app.use("/auth",authRouter)
 app.use("/api/user",userRouter)
 app.use("/api/product",customerProductRouter)
 app.use("/api/order",orderRouter)
