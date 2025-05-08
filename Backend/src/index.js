@@ -3,7 +3,7 @@ const app = express()
 import cors from 'cors'
 import dotenv from 'dotenv'
 import path from 'path'
-import {connectDb} from "./src/config/db.js"
+import {connectDb} from "./config/db.js"
 
 dotenv.config()
 
