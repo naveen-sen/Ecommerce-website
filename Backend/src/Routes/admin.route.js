@@ -2,7 +2,6 @@ import Router from 'express'
 import {authenticate} from '../Middleware/authenticate.js'
 
 import {getAllOrder,confirmOrders,shippedOrders,deleteOrders,cancelOrders,deliverOrders} from '../Controller/adminOrder.controller.js'
-// const Order = require("../Model/order.model.js");
 
 const router = Router()
 

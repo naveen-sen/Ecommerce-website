@@ -18,9 +18,10 @@ const corsOptions = {
 
 }
 
-app.use(cors(corsOptions))
+
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use(cors(corsOptions))
 
 
 
@@ -58,7 +59,6 @@ if(process.env.NODE_ENV=="production"){
         res.sendFile(path.join(_dirname,"../Frontend","dist","index.html"))
     })
 }
-
 
 
 app.listen(PORT,async ()=>{

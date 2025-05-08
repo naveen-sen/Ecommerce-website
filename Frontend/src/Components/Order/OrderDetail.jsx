@@ -72,7 +72,7 @@ function OrderDetail() {
                         </div>
                       </Grid>
         
-                      <Grid item xs={12} md={5} className='ml-180  '>
+                      <Grid item xs={12} md={5} className='ml-150  '>
                         <h1 className='text-xl font-semibold pb-4 '>Product Ratings</h1>
                         
                         <div className='flex items-center space-x-4 mb-4'>
