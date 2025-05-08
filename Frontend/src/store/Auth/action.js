@@ -1,4 +1,3 @@
-import { BASE_URL } from "../../config/axiosConfig"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType"
@@ -7,10 +6,12 @@ const registerRequest = ()=>({type:REGISTER_REQUEST});
 const registerSuccess = (user)=>({type:REGISTER_SUCCESS,payload:user});
 const registerFailure = (error)=>({type:REGISTER_FAILURE,payload:error});
 
+const BaseUrl = import.meta.env.MODE==="development" ?"http://localhost:3000" : "/"
+
 export const register = (userData)=>async (dispatch)=>{
     dispatch(registerRequest())
     try{
-        const response = await axios.post(`${BASE_URL}/auth/signup`,userData)
+        const response = await axios.post(`${BaseUrl}/auth/signup`,userData)
         const user = response.data;
         if(user?.token){
             localStorage.setItem("jwt",user.token)
@@ -37,7 +38,7 @@ const loginFailure = (error)=>({type:LOGIN_FAILURE,payload:error.message});
 export const login = (userData)=>async (dispatch)=>{
     dispatch(loginRequest())
     try{
-        const response = await axios.post(`${BASE_URL}/auth/signin`,userData)
+        const response = await axios.post(`${BaseUrl}/auth/signin`,userData)
         const user = response.data;
         if(user?.token){
             localStorage.setItem("jwt",user.token)
@@ -68,7 +69,7 @@ export const getUser = (token)=>async (dispatch)=>{
             toast.error("No AuthenticationToken not found")
             throw new Error("No AuthenticationToken not found")	
         }
-        const response = await axios.get(`${BASE_URL}/api/user/profile`,{
+        const response = await axios.get(`${BaseUrl}/api/user/profile`,{
             headers: {
                 "Authorization": `Bearer ${authToken}`
             }

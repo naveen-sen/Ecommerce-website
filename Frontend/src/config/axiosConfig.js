@@ -1,11 +1,9 @@
 import axios from 'axios'
 
-export const BASE_URL = import.meta.env.MODE==="development" ? "http://localhost:3000" : "/"
-
 const token = localStorage.getItem("jwt")
 
 export const api = axios.create({
-    baseURL: BASE_URL,
+    baseURL: import.meta.env.MODE==="development" ? "http://localhost:3000" : "/",
     headers:{
         "authorization":`Bearer ${token}`,
         "Content-Type":"application/json"
