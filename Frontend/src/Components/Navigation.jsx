@@ -257,16 +257,33 @@ export default function Navigation() {
 
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <Button onClick={handleOpen}>
-                  Sign in
-                </Button>
-              </div>
-              <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                  Create account
-                </a>
-              </div>
+              {auth?.user ? (
+                <>
+                  <div className="flow-root">
+                    <a href="/account/orders" className="-m-2 block p-2 font-medium text-gray-900">
+                      My Orders
+                    </a>
+                  </div>
+                  <div className="flow-root">
+                    <Button onClick={handleLogout} className="w-full">
+                      Logout
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flow-root">
+                    <Button onClick={handleOpen}>
+                      Sign in
+                    </Button>
+                  </div>
+                  <div className="flow-root">
+                    <Button onClick={handleSignup} className="w-full">
+                      Create account
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
 
           </DialogPanel>

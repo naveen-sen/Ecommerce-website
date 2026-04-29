@@ -33,7 +33,7 @@ export const createPaymentLink = async(orderId)=>{
                 email:true
             },
             reminder_enable:true,
-            callback_url:`http://localhost:5173/payment-success/${orderId}`,callback_method:"get"
+            callback_url:`https://thetrendycart.onrender.com/payment-success/${orderId}`,callback_method:"get"
         }
 
         const paymentLink = await razorpay.paymentLink.create(paymentLinkRequest)
