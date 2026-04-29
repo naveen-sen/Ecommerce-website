@@ -1,10 +1,9 @@
 import { Button } from '@headlessui/react'
 import { Grid, Typography } from '@mui/material'
-import React from 'react'
 
 function Footer() {
   return (
-    <div className='w-screen' style={{margin: 0, padding: 0, left: 0}}>
+    <div className='w-full' style={{margin: 0, padding: 0, left: 0}}>
         <Grid className="bg-black text-white text-center mt-10 w-full " container 
         sx={{bgcolor:"black",color:"white",py:3, width:"100%",maxWidth:"100%"}}
         >

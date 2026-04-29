@@ -170,7 +170,7 @@ export default function Navigation() {
   }
 
   return (
-    <div className="bg-white w-screen">
+    <div className="bg-white w-full">
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop
@@ -191,7 +191,7 @@ export default function Navigation() {
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="size-6" />
+                <XMarkIcon aria-hidden="true" className="size-12" />
               </button>
             </div>
 
@@ -278,7 +278,7 @@ export default function Navigation() {
                     </Button>
                   </div>
                   <div className="flow-root">
-                    <Button onClick={handleSignup} className="w-full">
+                    <Button onClick={handleSignup}>
                       Create account
                     </Button>
                   </div>
@@ -290,14 +290,14 @@ export default function Navigation() {
         </div>
       </Dialog>
 
-      <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+      <header className="relative bg-white w-full">
+        <p className="flex h-10 items-center justify-center bg-indigo-600 text-sm font-medium text-white">
           Get free delivery on orders over Rs. 500
         </p>
 
-        <nav aria-label="Top" className=" px-4 sm:px-6 lg:px-8">
+        <nav aria-label="Top" className="w-full">
           <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center px-11">
+            <div className="flex h-16 items-center px-4 sm:px-6 lg:px-8">
               <button
                 type="button"
                 onClick={() => setOpen(true)}
@@ -395,7 +395,50 @@ export default function Navigation() {
                 </div>
               </PopoverGroup>
 
-              <div className="ml-auto flex items-center">
+              <div className="ml-auto flex items-center gap-4">
+              {/* Mobile user profile */}
+              <div className="lg:hidden">
+                {auth?.user ? (
+                  <Menu as="div" className="relative">
+                    <MenuButton className="flex items-center">
+                      <div className='profile flex rounded-full size-7 bg-indigo-600 cursor-pointer items-center justify-center'>
+                        <p className='text-white font-bold text-sm pb-0.5'>
+                          {auth.user.firstName?.[0]?.toUpperCase() || 'U'}
+                        </p>
+                      </div>
+                    </MenuButton>
+                    
+                    <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                      <MenuItem>
+                        {({ active }) => (
+                          <a
+                            href="/account/orders"
+                            className={`${
+                              active ? 'bg-gray-100' : ''
+                            } block px-4 py-2 text-sm text-left text-gray-700`}
+                          >
+                            My Orders
+                          </a>
+                        )}
+                      </MenuItem>
+                      <MenuItem>
+                        {({ active }) => (
+                          <button
+                            onClick={handleLogout}
+                            className={`${
+                              active ? 'bg-gray-100' : ''
+                            } block w-full text-left px-4 py-2 text-sm text-gray-700`}
+                          >
+                            Logout
+                          </button>
+                        )}
+                      </MenuItem>
+                    </MenuItems>
+                  </Menu>
+                ) : null}
+              </div>
+
+              {/* Desktop user profile */}
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
   {auth?.user ? (
     <Menu as="div" className="relative">

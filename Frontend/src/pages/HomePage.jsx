@@ -52,19 +52,21 @@ function HomePage() {
   }, [dispatch, products]);
 
   return (
-    <div className="w-screen ">
+    <>
       <HomeCarousel />
-      <div className="w-full mx-auto px-2">
-        <div className="space-y-6 py-10 flex flex-col">
-          <HomesecCarousel dataName={products.mens_kurta} sectionName={"Men's Kurta"} />
-          <HomesecCarousel dataName={products.shirt} sectionName={"Men's Shirt"} />
-          <HomesecCarousel dataName={products.shoes} sectionName={"Men's Shoes"} />
-          <HomesecCarousel dataName={products.watches} sectionName={"Men's Watches"} />
-          <HomesecCarousel dataName={products.lengha_choli} sectionName={"Women's Lengha Choli"} />
-          <HomesecCarousel dataName={products.women_dress} sectionName={"Women's Dress"} />
+      <div className="w-full bg-white">
+        <div className="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-6 py-10 flex flex-col">
+            <HomesecCarousel dataName={products.mens_kurta} sectionName={"Men's Kurta"} />
+            <HomesecCarousel dataName={products.shirt} sectionName={"Men's Shirt"} />
+            <HomesecCarousel dataName={products.shoes} sectionName={"Men's Shoes"} />
+            <HomesecCarousel dataName={products.watches} sectionName={"Men's Watches"} />
+            <HomesecCarousel dataName={products.lengha_choli} sectionName={"Women's Lengha Choli"} />
+            <HomesecCarousel dataName={products.women_dress} sectionName={"Women's Dress"} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

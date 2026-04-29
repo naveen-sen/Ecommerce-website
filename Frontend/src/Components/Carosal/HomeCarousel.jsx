@@ -1,4 +1,3 @@
-import React from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import { HomeCarouselData } from './HomeCarouselData';
@@ -14,16 +13,16 @@ export const HomeCarousel = () => {
       style={{
         height: '500px',
         objectFit: 'cover',
-        width: '100vw',
+        width: '100%',
         objectPosition: 'center',
       }}
     />
   ));
 
   return (
-    <div style={{ width: '100vw', overflow: 'hidden' }}>
+    <div style={{ width: '100%', overflow: 'hidden' }}>
       <AliceCarousel 
-        style={{width:"100vw"}}
+        style={{width:"100%"}}
         mouseTracking
         items={items}
         autoPlay
