@@ -1,7 +1,7 @@
 'use client'
 
 import { Radio, RadioGroup } from '@headlessui/react';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import Rating from '@mui/material/Rating';
@@ -229,149 +229,54 @@ export default function ProductDetail() {
 
         {/*rating and reviews */}
 
-        <section className='w-[90vw]'>
+        <section className='w-full'>
           <div className="flex justify-start">
-            <h1 className='font-semibold text-lg pb-4'>Recent Rating and Reviews</h1>
+            <h1 className='font-semibold text-lg pb-4 pl-2'>Recent Rating and Reviews</h1>
           </div>
-          <div className='border border-gray-300 p-5 '>
-            <Grid container spacing={7}>
-              <Grid item xs={7}>
-                <div className='space-y-5'>
-                  {[1,1,1].map((item)=> <ProductReviewCard/>)}
-                </div>
-              </Grid>
+          <div className='border border-gray-300 p-3 sm:p-5' style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+            <div>
+              <div className='space-y-3 sm:space-y-5'>
+                {[1,1,1].map((item)=> <ProductReviewCard/>)}
+              </div>
+            </div>
 
-              <Grid item xs={5} className='ml-150'>
-                <h1 className='text-xl font-semibold pb-4'>Product Ratings</h1>
-                
-                <div className='flex items-center space-x-4 mb-4'>
-                  <Rating value={4.6} precision={0.5} readOnly />
-                  <p className='opacity-60'>5794 Ratings</p>
-                </div>
+            <div className='w-full'>
+              <h1 className='text-lg sm:text-xl font-semibold pb-4'>Product Ratings</h1>
+              
+              <div className='flex flex-col sm:flex-row sm:items-center gap-3 mb-4'>
+                <Rating value={4.6} precision={0.5} readOnly />
+                <p className='opacity-60 text-sm'>5794 Ratings</p>
+              </div>
 
-                <Box className='space-y-3 mt-5 px-2'>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={2}>
-                      <p className="text-sm text-gray-500 mx-1.5">Excellent</p>
-                    </Grid>
-                    <Grid item xs={10}>
-                      
-                      <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        color='success'
-                        sx={{
-                          minHeight: 8,
-                          minWidth: 100,
-                          borderRadius: 4,
-                          backgroundColor: '#e5e7eb',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: 'success',
-                            borderRadius: 4,
-                            ml:1
-                          }
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={2}>
-                      <p className="text-sm text-gray-500 mx-0">Very Good</p>
-                    </Grid>
-                    <Grid item xs={10}>
-                      
-                      <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        sx={{
-                          minHeight: 8,
-                          minWidth: 100,
-                          borderRadius: 4,
-                          backgroundColor: '#e5e7eb',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: 'lightgreen',
-                            borderRadius: 4,
-                            ml:1
-                          }
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={2}>
-                      <p className="text-sm text-gray-500 mx-4">Good</p>
-                    </Grid>
-                    <Grid item xs={10}>
-                      
-                      <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        sx={{
-                          minHeight: 8,
-                          minWidth: 100,
-                          borderRadius: 4,
-                          backgroundColor: '#e5e7eb',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: '#fbbf24',
-                            borderRadius: 4,
-                            ml:1
-                          }
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={2}>
-                      <p className="text-sm text-gray-500 mx-2">Average</p>
-                    </Grid>
-                    <Grid item xs={10}>
-                      
-                      <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        color='warning'
-                        sx={{
-                          minHeight: 8,
-                          minWidth: 100,
-                          borderRadius: 4,
-                          backgroundColor: '#e5e7eb',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: 'success',
-                            borderRadius: 4,
-                            
-                          }
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={2}>
-                      <p className="text-sm text-gray-500 mx-4.5">Poor</p>
-                    </Grid>
-                    <Grid item xs={10}>
-                      
-                      <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        color='error'
-                        sx={{
-                          minHeight: 8,
-                          minWidth: 100,
-                          borderRadius: 4,
-                          backgroundColor: '#e5e7eb',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: 'success',
-                            borderRadius: 4,
-                            ml:1
-                          }
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-
-            </Grid>
+              <Box className='space-y-2 sm:space-y-3 mt-5'>
+                {[
+                  { label: 'Excellent', value: 40, color: '#22c55e' },
+                  { label: 'Very Good', value: 40, color: '#86efac' },
+                  { label: 'Good', value: 40, color: '#fbbf24' },
+                  { label: 'Average', value: 40, color: '#f97316' },
+                  { label: 'Poor', value: 40, color: '#ef4444' }
+                ].map((rating, idx) => (
+                  <div key={idx} className='flex items-center gap-2 sm:gap-3'>
+                    <p className="text-xs sm:text-sm text-gray-500 w-14 sm:w-20 md:w-20 flex-shrink-0">{rating.label}</p>
+                    <LinearProgress
+                      variant="determinate"
+                      value={rating.value}
+                      sx={{
+                        minHeight: 6,
+                        minWidth: 100,
+                        flex: 1,
+                        borderRadius: 4,
+                        backgroundColor: '#e5e7eb',
+                        '& .MuiLinearProgress-bar': {
+                          backgroundColor: rating.color,
+                          borderRadius: 4
+                        }
+                      }}
+                    />
+                  </div>
+                ))}
+              </Box>
+            </div>
 
           </div>
         </section>
@@ -380,7 +285,7 @@ export default function ProductDetail() {
         {/* Similar Product */}
         <section className="w-screen pt-10">
           <div className="flex justify-start">
-              <h1 className="py-5 font-bold">Similar Product</h1>
+              <h1 className="py-5 font-bold text-lg pl-4">Similar Product</h1>
           </div>
 
           <div className="flex flex-wrap space-y-5">

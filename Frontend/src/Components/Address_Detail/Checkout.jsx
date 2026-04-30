@@ -62,8 +62,12 @@ export default function Checkout() {
 
 
   return (
-    <Box className='py-10  ' sx={{ width: '80vw' }}>
-      <Stepper className='ml-80' activeStep={activeStep}>
+    <Box className='py-5 sm:py-10 px-2 sm:px-4' sx={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+      <Stepper className='w-full' activeStep={activeStep} sx={{ 
+        '& .MuiStepLabel-label': { 
+          fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
+        }
+      }}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
@@ -95,22 +99,23 @@ export default function Checkout() {
       ) : (
         <React.Fragment>
 
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap: { xs: 1, sm: 2 } }}>
             <Button
               color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{ mr: 1, ml: 45 }}
+              size='small'
+              sx={{ fontSize: { xs: '0.75rem', sm: '1rem' } }}
             >
               Back
             </Button>
             <Box sx={{ flex: '1 1 auto' }} /> 
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} size='small' sx={{ fontSize: { xs: '0.75rem', sm: '1rem' } }}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
 
-          <div className='mt-8'>
+          <div className='mt-6 sm:mt-8 overflow-x-hidden'>
             {activeStep===2 && <AddDelivery/>}
             {activeStep===3 && <OrderSummary/>}
           </div>

@@ -35,13 +35,13 @@ const navigation = {
       featured: [
         {
           name: 'New Arrivals',
-          href: '#',
+          href: 'women/clothing/woman_dress',
           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
           imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
         },
         {
           name: 'Basic Tees',
-          href: '#',
+          href: 'women/clothing/top',
           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg',
           imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
         },
@@ -51,25 +51,28 @@ const navigation = {
           id: 'clothing',
           name: 'clothing',
           items: [
-            { name: 'Lengha Choli ', href: '#' },
-            { name: 'Women Dress', href: '#' },
-            { name: 'top', href: '#' },
-            { name: 'Women Jeans', href: '#' },
-            { name: 'Gouns', href: '#' },
+            { name: 'Lengha Choli ', href: 'women/clothing/lengha_choli' },
+            { name: 'Women Dress', href: 'women/clothing/women_dress' },
+            { name: 'top', href: 'women/clothing/top' },
+            { name: 'Women Jeans', href: 'women/clothing/women_jeans' },
+            { name: 'Gouns', href: 'women/clothing/gouns' },
           ],
         },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watch', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' },
-          ],
-        },
+
+        // Add Accessories Url
+
+        // {
+        //   id: 'accessories',
+        //   name: 'Accessories',
+        //   items: [
+        //     { name: 'Watch', href: '#' },
+        //     { name: 'Wallets', href: '#' },
+        //     { name: 'Bags', href: '#' },
+        //     { name: 'Sunglasses', href: '#' },
+        //     { name: 'Hats', href: '#' },
+        //     { name: 'Belts', href: '#' },
+        //   ],
+        // },
       ],
     },
     {
@@ -78,14 +81,14 @@ const navigation = {
       featured: [
         {
           name: 'New Arrivals',
-          href: '#',
+          href: 'men/clothing/mens_kurta',
           imageSrc:
             'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
           imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
         },
         {
           name: 'Artwork Tees',
-          href: '#',
+          href: 'men/clothing/shirt',
           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg',
           imageAlt:
             'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
@@ -96,17 +99,17 @@ const navigation = {
           id: 'clothing',
           name: 'Clothing',
           items: [
-            { name: 'Mens Kurta', href: '#' },
-            { name: 'Shirt', href: '#' },
-            { name: 'Men Jeans', href: '#' },
-            { name: "Shoes", href: '#' },
+            { name: 'Mens Kurta', href: 'men/clothing/mens_kurta' },
+            { name: 'Shirt', href: 'men/clothing/shirt' },
+            { name: 'Men Jeans', href: 'men/clothing/men_jeans' },
+            { name: "Shoes", href: 'men/clothing/shoes' },
           ],
         },
         {
           id: 'accessories',
           name: 'Accessories',
           items: [
-            { name: 'Watches', href: '#' },
+            { name: 'Watches', href: 'men/accessories/watches' },
           ],
         },
       ],
@@ -162,11 +165,20 @@ export default function Navigation() {
   }
 
 
-  const handleCategoryClick = (category,section,item,close)=>{
+const handleCategoryClick = (category,section,item,close)=>{
     // Trim item.name, then transform to lowercase and replace spaces with underscores
     const formattedItemName = item.name.trim().toLowerCase().replace(/\s+/g, '_');
     navigate(`/${category.id}/${section.id}/${formattedItemName}`);
     close()	
+  }
+
+  const handleMobileCategoryClick = (category,section,item)=>{
+    // Trim item.name, then transform to lowercase and replace spaces with underscores
+    const formattedItemName = item.name.trim().toLowerCase().replace(/\s+/g, '_');
+    // Use absolute path with leading slash to avoid duplicating URL
+    navigate(`/${category.id}/${section.id}/${formattedItemName}`);
+    // Close the mobile menu
+    setOpen(false);
   }
 
   return (
@@ -242,9 +254,12 @@ export default function Navigation() {
                         >
                           {section.items.map((item) => (
                             <li key={item.name} className="flow-root">
-                              <a href={item.href} className="-m-2 block p-2 text-gray-500">
+                              <p 
+                                onClick={() => handleMobileCategoryClick(category, section, item)} 
+                                className="-m-2 block p-2 text-gray-500 cursor-pointer hover:text-gray-800"
+                              >
                                 {item.name}
-                              </a>
+                              </p>
                             </li>
                           ))}
                         </ul>

@@ -1,17 +1,16 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Navigation from '../Components/Navigation'
-import Footer from '../Components/Footer/Footer'
-import HomePage from '../pages/HomePage'
-import Cart from '../Components/Cart/Cart'
-import Product from '../Components/Product/Product'
-import ProductCard from '../Components/Product/ProductCard'
-import { mens_kurta } from '../Data/Mens/Men_kurta'
-import ProductDetail from '../Components/ProductDetail/ProductDetail'
 import Checkout from '../Components/Address_Detail/Checkout'
+import Cart from '../Components/Cart/Cart'
+import Footer from '../Components/Footer/Footer'
+import Navigation from '../Components/Navigation'
 import Order from '../Components/Order/Order'
 import OrderDetail from '../Components/Order/OrderDetail'
 import PaymentSuccess from '../Components/Payment/PaymentSuccess'
+import Product from '../Components/Product/Product'
+import ProductDetail from '../Components/ProductDetail/ProductDetail'
+import { mens_kurta } from '../Data/Mens/Men_kurta'
+import HomePage from '../pages/HomePage'
+import NotFound from '../Components/NotFound'
 
 function CustomerRouter() {
   return (
@@ -32,6 +31,7 @@ function CustomerRouter() {
             <Route path='/account/orders' element={<Order/>}></Route>
             <Route path='/account/orders/:orderId' element={<OrderDetail/>}></Route>
             <Route path='/payment-success/:orderId' element={<PaymentSuccess/>}></Route>
+            <Route path='*' element={<NotFound/>}></Route>
 
 
             {/* <HomePage/> */}

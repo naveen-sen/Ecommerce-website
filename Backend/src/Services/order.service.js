@@ -9,8 +9,8 @@ import { findUserCart } from '../Services/cart.service.js'
 export async function createOrder(user, shippingAddress) {
     let address;
 
-    if (shippingAddress._id) {
-        let isExist = await Address.findById(new mongoose.Types.ObjectId(shippingAddress._id)).populate("carts");
+if (shippingAddress._id) {
+        let isExist = await Address.findById(new mongoose.Types.ObjectId(shippingAddress._id));
         address = isExist;
     } else {
         address = new Address(shippingAddress);

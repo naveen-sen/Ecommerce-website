@@ -38,44 +38,41 @@ function OrderSummary() {
   }
 
   return (
-    <div className='w-[90vw]'>
-      <div className='p-5 shadow-lg rounded-s-md border border-gray-300 ml-6'>
+    <div className='w-full px-2 sm:px-4'>
+      <div className='p-3 sm:p-5 shadow-lg rounded-lg border border-gray-300'>
         <AddressCard address={order?.shippingAddress}/>
       </div>
-      <div className='flex flex-col -ml-9 mt-5'>
-        <div className='w-[100vw]'>
-              <div className='lg:grid lg:grid-cols-3 lg:px-16 relative'>
-                <div className='lg:col-span-2 lg:pr-8'>
-                  {order?.orderItems?.map((item) =><CartItem item={item}/>)}
+      <div className='w-full mt-5'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6'>
+          <div className='lg:col-span-2 overflow-x-hidden'>
+            {order?.orderItems?.map((item) =><CartItem item={item}/>)}
+          </div>
+          <div className='flex flex-col gap-3'>
+            <div className='border border-gray-300 rounded-md shadow-lg p-4 sm:p-5'>
+              <p className='uppercase font-bold opacity-70 pb-4 text-sm'>Price Details</p>
+              <hr/>
+              <div className='space-y-2 sm:space-y-3 font-semibold text-xs sm:text-sm'>
+                <div className='flex justify-between pt-2 text-black'>
+                  <span>Price</span>
+                  <span>₹ {order?.totalPrice}</span>
                 </div>
-                <div className='px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0'>
-                  <div className='border border-gray-300 rounded-md shadow-lg p-5'>
-                    <p className='uppercase font-bold opacity-70 pb-4'>Price Details</p>
-                    <hr/>
-                    <div className='space-y-3 font-semibold'>
-                      <div className='flex justify-between pt-2 text-black'>
-                        <span>Price</span>
-                        <span>₹ {order?.totalPrice}</span>
-                      </div>
-                      <div className='flex justify-between pt-2 text-black'>
-                        <span>Discount</span>
-                        <span className='text-green-600'>-₹ {order?.discount}</span>
-                      </div>
-                      <div className='flex justify-between pt-2 text-black'>
-                        <span>Delivery Charges</span>
-                        <span className='text-green-600'>Free</span>
-                      </div>
-                      <div className='flex justify-between pt-2 text-black font-bold'>
-                        <span>Total Amount</span>
-                        <span className='text-green-600'>₹ {order?.totalDiscountedPrice}</span>
-                      </div>
-                    </div>  
-                  </div>
-                  <Button variant='contained' onClick={handleCheckOut} className='w-full mt-5 mb-4' sx={{px:"2.5rem",py:"0.7rem",bgcolor:'#9155fd'}}>Confirm Order</Button>
+                <div className='flex justify-between pt-2 text-black'>
+                  <span>Discount</span>
+                  <span className='text-green-600'>-₹ {order?.discount}</span>
                 </div>
-                
-              </div>
+                <div className='flex justify-between pt-2 text-black'>
+                  <span>Delivery Charges</span>
+                  <span className='text-green-600'>Free</span>
+                </div>
+                <div className='flex justify-between pt-2 text-black font-bold'>
+                  <span>Total Amount</span>
+                  <span className='text-green-600'>₹ {order?.totalDiscountedPrice}</span>
+                </div>
+              </div>  
             </div>
+            <Button variant='contained' onClick={handleCheckOut} fullWidth sx={{py:"0.7rem",bgcolor:'#9155fd', fontSize: { xs: '0.75rem', sm: '1rem' }}}>Confirm Order</Button>
+          </div>
+        </div>
       </div>
     </div>
   )
